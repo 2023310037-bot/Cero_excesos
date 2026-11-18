@@ -1,0 +1,46 @@
+
+# =========================
+# SECRETOS Y CONFIGURACIONES
+# =========================
+.env
+.env.*
+!.env.example
+backend_API/.env
+**/secrets/
+*.pem
+*.key
+
+# =========================
+# PYTHON - BACKEND API
+# =========================
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*.log
+
+backend_API/logs/
+
+# Archivos subidos por usuarios
+backend_API/uploads/*
+!backend_API/uploads/.gitkeep
+
+# =========================
+# FLUTTER - APP MOVIL
+# =========================
+flutter_cero_excesos/build/
+flutter_cero_excesos/.dart_tool/
+flutter_cero_excesos/.idea/
+flutter_cero_excesos/*.iml
+
+# Configuraciones locales de Android
+flutter_cero_excesos/android/local.properties
+flutter_cero_excesos/android/key.properties
+*.jks
+*.keystore
+
+# =========================
+# ARCHIVOS DEL SISTEMA
+# =========================
+.DS_Store
+Thumbs.db
