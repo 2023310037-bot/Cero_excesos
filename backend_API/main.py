@@ -106,11 +106,6 @@ EXTENSION_POR_TIPO = {
     "image/webp": ".webp",
 }
 
-
-# ==========================================
-# RNF-004: REGISTRO DE ERRORES
-# ==========================================
-
 CARPETA_LOGS = Path("logs")
 CARPETA_LOGS.mkdir(parents=True, exist_ok=True)
 
@@ -130,9 +125,7 @@ if not logger.handlers:
     logger.addHandler(manejador)
 
 
-# ==========================================
 # CREACIÓN DE TOKEN
-# ==========================================
 
 def crear_token(usuario: Usuario):
     fecha_actual = datetime.now(timezone.utc)
@@ -154,9 +147,7 @@ def crear_token(usuario: Usuario):
     return token
 
 
-# ==========================================
 # VERIFICAR USUARIO AUTENTICADO
-# ==========================================
 
 def obtener_usuario_actual(
     credenciales: HTTPAuthorizationCredentials | None = Depends(security),
@@ -216,10 +207,6 @@ def obtener_admin(usuario: Usuario = Depends(obtener_usuario_actual)):
 
     return usuario
 
-
-# Igual que el anterior, pero sin sesión no marca error: regresa None.
-# Sirve para rutas públicas que muestran datos extra al usuario con sesión
-# (su propia valoración o sus propias reacciones).
 def obtener_usuario_opcional(
     credenciales: HTTPAuthorizationCredentials | None = Depends(security),
     db: Session = Depends(obtener_sesion),
@@ -233,12 +220,9 @@ def obtener_usuario_opcional(
         return None
 
 
-# ==========================================
 # FUNCIONES PARA FOTOGRAFÍAS
-# ==========================================
 
 async def guardar_imagen(imagen: UploadFile) -> str:
-    # Valida la fotografía, la guarda en uploads/ y regresa su ruta pública.
     extension = Path(imagen.filename or "").suffix.lower()
 
     if extension not in EXTENSIONES_PERMITIDAS:
@@ -289,9 +273,7 @@ def hay_archivo(imagen: UploadFile | None) -> bool:
     return imagen is not None and bool(imagen.filename)
 
 
-# ==========================================
 # INICIO DE FASTAPI
-# ==========================================
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -321,9 +303,7 @@ app.add_middleware(
 )
 
 
-# ==========================================
 # MANEJO DE ERRORES
-# ==========================================
 
 @app.exception_handler(RequestValidationError)
 async def error_de_validacion(request: Request, error: RequestValidationError):
@@ -424,12 +404,6 @@ def iniciar_sesion(
         "tip_usu": usuario.tip_usu,
     }
 
-
-# ==========================================
-# RF001: REGISTRO DE USUARIOS
-# Siempre crea usuarios generales (tipo 2).
-# ==========================================
-
 @app.post(
     "/usuarios",
     response_model=UsuarioRespuesta,
@@ -473,11 +447,6 @@ def crear_usuario(
 
     return usuario
 
-
-# ==========================================
-# RF007: GESTIÓN DEL PERFIL
-# Cada usuario solo ve y edita su propio perfil.
-# ==========================================
 
 @app.get(
     "/perfil/me",
@@ -573,10 +542,6 @@ def listar_categorias(
         select(Categoria).order_by(Categoria.id_cat)
     ).all()
 
-
-# ==========================================
-# RF003 y RF004: BLOG (PUBLICACIONES)
-# ==========================================
 
 def validar_datos_blog(
     titulo: str,
@@ -924,10 +889,6 @@ def eliminar_blog(
     return {"mensaje": "Publicación eliminada correctamente"}
 
 
-# ==========================================
-# RF006: COMENTARIOS (CON REACCIONES)
-# ==========================================
-
 @app.get(
     "/blog/{blog_id}/comentarios",
     response_model=list[ComentarioRespuesta],
@@ -972,7 +933,7 @@ def crear_comentario(
 
     obtener_blog_o_404(db, datos.blog_id)
 
-    # El autor sale del token, no del cuerpo de la petición.
+    
     nuevo = Comentario(
         comentario=texto,
         usr_id=usuario.id_usr,
@@ -1052,11 +1013,6 @@ def reaccionar_comentario(
 
     return comentario.reacciones
 
-
-# ==========================================
-# VALORACIÓN CON ESTRELLAS (1 a 5)
-# ==========================================
-
 @app.get(
     "/blog/{blog_id}/valoracion",
     response_model=ValoracionRespuesta,
@@ -1123,11 +1079,6 @@ def valorar_blog(
 
     return resumen_valoracion(db, blog_id, usuario)
 
-
-# ==========================================
-# RF007: CAMBIAR CORREO Y CONTRASEÑA
-# Piden la contraseña actual para confirmar que eres tú.
-# ==========================================
 
 def confirmar_contrasena_actual(usuario: Usuario, contrasena: str):
     try:

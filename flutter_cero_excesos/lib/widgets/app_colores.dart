@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// Identidad visual de Cero Excesos (RNF-001 y RNF-002).
+// Identidad visual de Cero Excesos.
 // Diseño minimalista: fondo casi blanco, texto verde profundo y
 // un solo acento (lima) usado con moderación.
 class AppColores {

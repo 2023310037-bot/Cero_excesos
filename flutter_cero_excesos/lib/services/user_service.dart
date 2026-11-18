@@ -7,7 +7,7 @@ import '../models/user_model.dart';
 import 'api_config.dart';
 
 class UserService {
-  // RF007: consultar el perfil de la sesión activa.
+  // Consultar el perfil de la sesión activa.
 
   Future<UserModel> obtenerMiPerfil(String token) async {
     final respuesta = await http.get(
@@ -29,7 +29,7 @@ class UserService {
     );
   }
 
-  // RF007: actualizar nombre, biografía y fotografía.
+  // Actualizar nombre, biografía y fotografía.
 
   Future<UserModel> actualizarMiPerfil({
     required String token,
@@ -59,7 +59,7 @@ class UserService {
     );
   }
 
-  // RF007: cambiar el correo (pide la contraseña actual).
+  // Cambiar el correo (pide la contraseña actual).
 
   Future<UserModel> cambiarCorreo({
     required String token,
@@ -90,7 +90,7 @@ class UserService {
     );
   }
 
-  // RF007: cambiar la contraseña (pide la contraseña actual).
+  // Cambiar la contraseña (pide la contraseña actual).
 
   Future<void> cambiarPassword({
     required String token,

@@ -198,7 +198,7 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
 
-                  // Leer el blog no requiere cuenta (RF004).
+                  // Leer el blog no requiere cuenta
                   TextButton(
                     onPressed: cargando
                         ? null

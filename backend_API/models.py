@@ -139,11 +139,8 @@ class Comentario(Base):
     def autor(self):
         return self.usuario.nom_usr
 
-
-# ==========================================
 # VALORACIÓN CON ESTRELLAS (opcional)
 # Un usuario solo puede valorar una vez cada entrada.
-# ==========================================
 
 class Valoracion(Base):
     __tablename__ = "valoracion"
@@ -169,11 +166,8 @@ class Valoracion(Base):
         nullable=False,
     )
 
-
-# ==========================================
 # REACCIONES A COMENTARIOS (opcional)
 # tipo: me_gusta, me_encanta, risa, asombro, tristeza, fuego
-# ==========================================
 
 class ReaccionComentario(Base):
     __tablename__ = "reaccion_comentario"

@@ -1,11 +1,6 @@
--- =====================================================================
 -- Cero Excesos - Script de creación de la base de datos (MySQL / MariaDB)
 -- Importar desde phpMyAdmin (pestaña "Importar") o ejecutar:
---     mysql -u root < base_de_datos/cero_excesos.sql
---
--- Es el mismo modelo que crea automáticamente la API (backend_API/models.py),
--- así que se puede usar este script o dejar que FastAPI cree las tablas.
--- =====================================================================
+--     mysql -u root < base_de_datos/cero_excesos.sql   
 
 CREATE DATABASE IF NOT EXISTS cero_excesos
     CHARACTER SET utf8mb4
@@ -33,7 +28,6 @@ CREATE TABLE IF NOT EXISTS perfil (
     CONSTRAINT fk_perfil_usuario FOREIGN KEY (usr_id) REFERENCES usuario (id_usr)
 ) ENGINE=InnoDB;
 
--- Categorías predefinidas
 CREATE TABLE IF NOT EXISTS categoria (
     id_cat   INT AUTO_INCREMENT PRIMARY KEY,
     nom_cat  VARCHAR(60) NOT NULL UNIQUE

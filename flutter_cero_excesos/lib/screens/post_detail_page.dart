@@ -13,8 +13,6 @@ import '../widgets/reaction_bar.dart';
 import '../widgets/star_rating.dart';
 import '../widgets/sticker_picker.dart';
 
-// RF004 (lectura detallada), RF006 (comentarios), valoración con estrellas
-// y comentarios interactivos (reacciones y stickers).
 class PostDetailPage extends StatefulWidget {
   final PostModel post;
   final Map<String, dynamic> usuario;
@@ -151,9 +149,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
     }
   }
 
-  // ==========================================
   // VALORACIÓN CON ESTRELLAS
-  // ==========================================
 
   Future<void> valorar(int puntos) async {
     try {
@@ -249,14 +245,12 @@ class _PostDetailPageState extends State<PostDetailPage> {
     );
   }
 
-  // ==========================================
   // COMENTARIOS, REACCIONES Y STICKERS
-  // ==========================================
 
   Future<void> enviarComentario() async {
     final texto = comentarioController.text.trim();
 
-    // RF006: no se permiten comentarios vacíos.
+    // No se permiten comentarios vacíos.
     if (texto.isEmpty) {
       mostrarMensaje('No puedes publicar un comentario vacío');
       return;

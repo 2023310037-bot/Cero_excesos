@@ -4,7 +4,7 @@ import '../models/categoria_model.dart';
 import 'api_config.dart';
 
 class CategoriaService {
-  // RF005: categorías disponibles.
+  // Categorías disponibles.
 
   Future<List<CategoriaModel>> obtenerCategorias() async {
     final respuesta = await http.get(

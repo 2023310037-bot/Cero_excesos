@@ -45,10 +45,6 @@ def obtener_sesion():
         db.close()
 
 
-# ==========================================
-# PREPARAR LA BASE DE DATOS
-# ==========================================
-
 CATEGORIAS_INICIALES = [
     "Finanzas",
     "Fitness & Salud",
@@ -58,7 +54,6 @@ CATEGORIAS_INICIALES = [
 
 
 def crear_base_si_no_existe():
-    # Se conecta a MySQL sin elegir base de datos y la crea si hace falta.
     conexion = pymysql.connect(
         host=DB_HOST,
         port=DB_PORT,
@@ -78,8 +73,6 @@ def crear_base_si_no_existe():
 
 
 def migrar_bd():
-    # create_all no modifica tablas que ya existen, así que aquí se agregan
-    # las columnas nuevas sin borrar datos.
     columnas = [c["name"] for c in inspect(engine).get_columns("usuario")]
 
     if "activo" not in columnas:
@@ -90,8 +83,6 @@ def migrar_bd():
 
 
 def inicializar_bd():
-    # Crea la base, las tablas y las categorías iniciales (RF005).
-    # Se puede ejecutar muchas veces sin duplicar datos.
     import models
 
     crear_base_si_no_existe()

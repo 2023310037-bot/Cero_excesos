@@ -1,121 +1,211 @@
 # Cero Excesos
 
-Blog de estilo de vida universitario (finanzas, hábitos y fitness).
-*Análisis y diseño de software* · LITIID013 · UTEQ.
+Blog de estilo de vida universitario: finanzas, hábitos estudiantiles, fitness y bienestar.
+Proyecto de la materia **Análisis y diseño de software** (LITIID013) · UTEQ.
 
-Misma estructura que `Flutter_LITIID013`: **FastAPI + MySQL (XAMPP)** y **Flutter** con las carpetas
-`models / screens / services / widgets`.
+**Autores:** Luis Manuel Juárez Pérez · Gerardo Esquivel Monterde
+
+La app (Flutter) y la API (FastAPI) comparten una misma base de datos MySQL, por lo que funciona en web (Chrome) y en móvil con el mismo código.
+
+---
+
+## Qué puedes hacer
+
+**Cualquier visitante**
+- Leer las entradas del blog (las más recientes primero) y filtrarlas por categoría.
+- Buscar entradas y ver el detalle con su promedio de estrellas y sus comentarios.
+
+**Usuario registrado**
+- Crear cuenta e iniciar sesión.
+- Publicar, editar y eliminar **sus** entradas (con foto desde la galería) y ver "Mis entradas".
+- Comentar, reaccionar a comentarios con emojis y enviar stickers.
+- Calificar entradas de 1 a 5 estrellas (una vez por entrada).
+- Editar su perfil (biografía y foto) y cambiar su correo o su contraseña.
+
+**Administrador**
+- Todo lo anterior, más:
+- Ver la lista de usuarios, buscarlos, **darlos de baja o de alta**.
+- Convertir a un usuario en administrador o quitarle el rol, y **crear nuevos administradores**.
+- Eliminar cualquier comentario inapropiado y cualquier entrada.
+
+Las categorías son: Finanzas, Fitness & Salud, Hábitos Estudiantiles y Estilo de Vida.
+
+---
+
+## Tecnologías
+
+| Parte | Tecnología |
+|---|---|
+| App | Flutter (Dart), `http`, `image_picker` |
+| API | Python, FastAPI, SQLAlchemy, Uvicorn |
+| Base de datos | MySQL / MariaDB (XAMPP) |
+| Seguridad | Hash Argon2 (pwdlib), tokens JWT (PyJWT) |
+
+---
+
+## Estructura del proyecto
 
 ```
 Cero_Excesos/
 ├── base_de_datos/
-│   └── cero_excesos.sql          Script de creación de la base de datos MySQL
-├── backend_API/                  FastAPI (igual que tu proyecto)
-│   ├── .env.example              Plantilla: cópiala como .env (el .env no se sube a GitHub)
-│   ├── database.py               Conexión SQLAlchemy + creación automática de BD y categorías
-│   ├── models.py                 Usuario, Perfil, Categoria, Blog, Comentario
-│   ├── schemas.py                Esquemas Pydantic
-│   ├── main.py                   Rutas de la API
-│   ├── datos_demo.py             Usuarios y entradas de ejemplo (opcional)
-│   ├── requirements.txt
-│   └── uploads/                  Fotos de entradas y perfiles
+│   └── cero_excesos.sql        Script SQL de la base de datos
+├── backend_API/
+│   ├── main.py                 Rutas de la API
+│   ├── models.py               Tablas (SQLAlchemy)
+│   ├── schemas.py              Validación de datos (Pydantic)
+│   ├── database.py             Conexión y creación automática de la BD
+│   ├── datos_demo.py           Usuarios y entradas de ejemplo
+│   ├── requirements.txt        Librerías de Python
+│   ├── .env.example            Plantilla de configuración
+│   └── uploads/                Fotos subidas (se generan al usar la app)
 └── flutter_cero_excesos/
     ├── pubspec.yaml
     └── lib/
-        ├── main.dart             Rutas con nombre (/login, /register, /blog, /add-blog, /profile)
-        ├── models/               user, post, comentario, categoria, valoracion, reaccion
-        ├── services/             api_config, auth, post, comentario, categoria, user, valoracion
-        ├── screens/              login, register, blog, post_detail, add_blog, profile
-        └── widgets/              auth_background, auth_card, custom_text_field, primary_button,
-                                  category_chip, post_card, user_drawer, app_colores,
-                                  star_rating, reaction_bar, sticker_picker,
-                                  dialogo_cambiar_correo, dialogo_cambiar_password
+        ├── main.dart           Tema y rutas
+        ├── models/             Clases de datos
+        ├── services/           Comunicación con la API
+        ├── screens/            Pantallas
+        └── widgets/            Componentes reutilizables
 ```
 
-## 1. Backend
+---
 
-1. Enciende **MySQL** en XAMPP y copia `backend_API/.env.example` como `backend_API/.env` (ajusta usuario, contraseña y `JWT_SECRET_KEY`).
-2. En la terminal de VS Code:
+## Requisitos previos
 
-```bash
+- [Python 3.10 o superior](https://www.python.org/downloads/) (marca "Add Python to PATH" al instalar)
+- [XAMPP](https://www.apachefriends.org/) con **MySQL** (o cualquier MySQL/MariaDB)
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) y Google Chrome
+- [Visual Studio Code](https://code.visualstudio.com/) (recomendado) con las extensiones de Dart y Flutter
+
+---
+
+## Instalación y ejecución (Windows)
+
+### 1. Descargar el proyecto
+
+```powershell
+git clone https://github.com/2023310037-bot/Cero_excesos.git
+cd Cero_excesos
+```
+
+También puedes usar **Code → Download ZIP** en GitHub y descomprimirlo.
+
+### 2. Encender MySQL
+
+Abre XAMPP y presiona **Start** en **MySQL**. No necesitas crear la base de datos a mano: la API la crea sola.
+
+### 3. Configurar y levantar la API
+
+```powershell
 cd backend_API
 python -m venv venv
-venv\Scripts\activate             # Linux/Mac: source venv/bin/activate
-pip install -r requirements.txt
-python datos_demo.py              # opcional: usuarios y 4 entradas de ejemplo
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+copy .env.example .env
+venv\Scripts\python.exe -m pip install -r requirements.txt
+venv\Scripts\python.exe datos_demo.py
+venv\Scripts\python.exe -m uvicorn main:app --reload
 ```
 
-La base `cero_excesos`, las tablas y las 4 categorías se crean solas al arrancar.
-También puedes crearlas a mano importando `base_de_datos/cero_excesos.sql` en phpMyAdmin (es el mismo modelo).
-Documentación de la API: <http://127.0.0.1:8000/docs>
+- En `.env` ajusta `DB_PASSWORD` si tu MySQL tiene contraseña para `root` (en XAMPP suele estar vacía).
+- En `.env` cambia `JWT_SECRET_KEY` por una clave larga y secreta. Puedes generar una con:
+  `venv\Scripts\python.exe -c "import secrets; print(secrets.token_hex(32))"`
+- `datos_demo.py` es opcional: crea usuarios y entradas de ejemplo.
+- Si ves `Application startup complete.`, la API funciona. Déjala abierta.
+- Documentación interactiva de la API: <http://127.0.0.1:8000/docs>
 
-Usuarios demo (`datos_demo.py`): `demo@ceroexcesos.mx` / `Demo12345` y administrador `admin@ceroexcesos.mx` / `Admin12345`.
+Si prefieres crear la base manualmente, importa `base_de_datos/cero_excesos.sql` en phpMyAdmin.
 
-## 2. App Flutter (móvil y web)
+> Si PowerShell bloquea la activación del entorno virtual, no la necesitas: los comandos de arriba usan `venv\Scripts\python.exe` directamente.
 
-**Opción A — dentro de tu proyecto actual** (ya tiene las carpetas `android/`, `ios/`…):
-copia `lib/` y `pubspec.yaml` de `flutter_cero_excesos` sobre tu proyecto y ejecuta `flutter pub get`.
+### 4. Ejecutar la app Flutter
 
-**Opción B — proyecto nuevo:**
+En **otra terminal**:
 
-```bash
+```powershell
 cd flutter_cero_excesos
 flutter create --project-name flutter_cero_excesos .
 flutter pub get
 ```
 
-Antes de correr, pon la dirección de tu servidor en **un solo lugar**: `lib/services/api_config.dart`
-(celular físico = IP de tu PC, emulador Android = `10.0.2.2`, Chrome = `127.0.0.1`).
+Después:
 
-```bash
-flutter run                 # celular o emulador
-flutter run -d chrome       # versión web (mismo código, mismo servidor y BD)
+1. Elimina el archivo `test/widget_test.dart` (lo vuelve a crear `flutter create` y no aplica a esta app).
+2. Abre `lib/services/api_config.dart` y confirma la dirección del servidor en `baseUrl`:
+
+| Dónde corres la app | Valor de `baseUrl` |
+|---|---|
+| Chrome o Windows | `http://127.0.0.1:8000` |
+| Emulador de Android | `http://10.0.2.2:8000` |
+| Celular físico (misma red WiFi) | `http://IP_DE_TU_PC:8000` (inicia la API con `--host 0.0.0.0`) |
+
+3. Ejecuta:
+
+```powershell
+flutter run -d chrome
 ```
 
-La versión web del RF000 se obtiene con `flutter run -d chrome` / `flutter build web`.
-Si la app es Android y usas `http://`, tu proyecto actual ya debe permitirlo
-(`android:usesCleartextTraffic="true"`); en un proyecto nuevo hay que agregarlo en `AndroidManifest.xml`.
+---
 
-## 3. Requerimientos → dónde están
+## Usuarios de prueba
 
-| Requerimiento | API (`main.py`) | Flutter |
+Se crean al ejecutar `datos_demo.py`:
+
+| Rol | Correo | Contraseña |
 |---|---|---|
-| RF001 Registro | `POST /usuarios` | `register_user_page.dart`, `auth_service.dart` |
-| RF002 Inicio de sesión (mensaje si falla) | `POST /login` | `login_user_page.dart`, `auth_service.dart` |
-| RF003 Publicar y gestionar entradas | `POST/PUT/DELETE /blog` | `add_blog_page.dart`, `post_service.dart` |
-| RF004 Consultar publicaciones (recientes primero) | `GET /blog`, `GET /blog/{id}` | `blog_page.dart`, `post_detail_page.dart` |
-| RF005 Categorías | `GET /categorias`, `GET /blog?cat_id=` | `category_chip.dart`, `blog_page.dart` |
-| RF006 Comentarios (con sesión, no vacíos) | `GET /blog/{id}/comentarios`, `POST /comentarios` | `post_detail_page.dart`, `comentario_service.dart` |
-| RF007 Perfil (solo el de la sesión) | `GET/PUT /perfil/me` | `profile_page.dart`, `user_service.dart` |
-| Extra: cambiar correo y contraseña (piden la contraseña actual) | `PUT /perfil/me/correo`, `PUT /perfil/me/password` | `dialogo_cambiar_correo.dart`, `dialogo_cambiar_password.dart` |
-| Extra: valoración con estrellas (1 a 5, una por usuario) | `GET/POST /blog/{id}/valoracion` | `star_rating.dart`, `post_detail_page.dart`, `valoracion_service.dart` |
-| Extra: comentarios interactivos (reacciones y stickers) | `POST /comentarios/{id}/reaccion` | `reaction_bar.dart`, `sticker_picker.dart`, `post_detail_page.dart` |
-| Extra: "Mis entradas" | `GET /blog?usr_id=` | `blog_page.dart` |
-| Extra: administrar usuarios (listar, dar de baja/alta, cambiar rol) | `GET /admin/usuarios`, `PUT /admin/usuarios/{id}/estado`, `PUT /admin/usuarios/{id}/rol` | `admin_users_page.dart`, `admin_service.dart` |
-| Extra: crear administradores | `POST /admin/administradores` | `admin_users_page.dart` |
-| Extra: moderar comentarios (el administrador o el autor eliminan) | `DELETE /comentarios/{id}` | `post_detail_page.dart`, `comentario_service.dart` |
-| RNF-001/002 Diseño y contraste | — | `app_colores.dart` + widgets |
-| RNF-003 API REST | todas las rutas (JSON) | carpeta `services/` |
-| RNF-004 Registro de errores | `logs/errores.log` + manejadores de error | `ApiConfig.mensajeError` |
+| Administrador | `admin@ceroexcesos.mx` | `Admin12345` |
+| Usuario | `demo@ceroexcesos.mx` | `Demo12345` |
 
-## 4. Qué cambió respecto a tu proyecto de referencia
+Son solo para pruebas locales.
 
-- Se agregó la tabla `categoria` (el diagrama de clases la pide) y `perfil` (biografía y foto).
-- Los comentarios usan el usuario del **token**, no un `usr_id` enviado por la app (así nadie comenta a nombre de otro) y la API devuelve el nombre del autor.
-- La dirección del servidor está en `api_config.dart` (antes estaba repetida en cada servicio con IPs distintas).
-- Se leen las respuestas con UTF-8 para que las tildes de los mensajes se vean bien.
-- Leer el blog no requiere cuenta (RF004); escribir y comentar sí.
-- El rol de administrador (`tip_usu = 1`) puede eliminar entradas y comentarios, ver la lista de usuarios, darlos de baja o de alta, y crear otros administradores. Un usuario dado de baja no puede iniciar sesión.
-- La subida de fotos usa solo la galería (se quitó la cámara).
-- Diseño minimalista centralizado en el tema de `main.dart`.
+---
 
-## 5. Seguridad (para el reporte)
+## Principales rutas de la API
 
-- **Contraseñas:** se guardan como hash Argon2 (pwdlib), nunca en texto plano. Es un hash de un solo sentido, más seguro que una encriptación reversible.
-- **Sesiones:** token JWT firmado con `JWT_SECRET_KEY`, que expira a las 2 horas y se manda en el encabezado `Authorization: Bearer`.
-- **Control de acceso:** solo el autor edita su entrada; el autor o el administrador la eliminan; nadie valora su propia entrada; el autor de un comentario o reacción sale del token, no de la petición.
-- **Cambio de correo y contraseña:** exigen la contraseña actual.
-- **Administración:** las rutas `/admin/*` exigen rol administrador; un administrador no puede darse de baja ni cambiarse el rol a sí mismo. Las bajas se verifican en cada petición, no solo al iniciar sesión.
-- **Manejo de errores:** respuestas con mensajes claros y registro de errores inesperados en `backend_API/logs/errores.log`.
-- **Archivos:** solo JPG, PNG y WEBP de hasta 5 MB, con nombre aleatorio.
+| Método | Ruta | Descripción |
+|---|---|---|
+| POST | `/usuarios` | Registro |
+| POST | `/login` | Inicio de sesión (devuelve el token) |
+| GET / PUT | `/perfil/me` | Ver y editar mi perfil |
+| PUT | `/perfil/me/correo`, `/perfil/me/password` | Cambiar correo o contraseña |
+| GET | `/categorias` | Lista de categorías |
+| GET / POST | `/blog` | Listar y crear entradas |
+| GET / PUT / DELETE | `/blog/{id}` | Ver, editar y eliminar una entrada |
+| GET / POST | `/blog/{id}/comentarios`, `/comentarios` | Comentarios |
+| DELETE | `/comentarios/{id}` | Eliminar comentario (autor o admin) |
+| POST | `/comentarios/{id}/reaccion` | Reaccionar a un comentario |
+| GET / POST | `/blog/{id}/valoracion` | Ver y enviar calificación |
+| GET | `/admin/usuarios` | Lista de usuarios (admin) |
+| PUT | `/admin/usuarios/{id}/estado` | Dar de baja o de alta (admin) |
+| PUT | `/admin/usuarios/{id}/rol` | Cambiar rol (admin) |
+| POST | `/admin/administradores` | Crear administrador (admin) |
+
+---
+
+## Seguridad
+
+- Las contraseñas se guardan como **hash Argon2**, nunca en texto plano.
+- Las sesiones usan **tokens JWT** firmados que expiran a las 2 horas.
+- Las rutas de administración exigen rol de administrador, y un administrador no puede darse de baja a sí mismo.
+- Los usuarios dados de baja pierden el acceso aunque tengan una sesión abierta.
+- Los cambios de correo y contraseña piden la contraseña actual.
+- Solo se aceptan imágenes JPG, PNG o WEBP de hasta 5 MB, guardadas con nombre aleatorio.
+- El archivo `.env` (claves y contraseñas) **no se sube al repositorio**.
+- Los errores inesperados se registran en `backend_API/logs/errores.log`.
+
+---
+
+## Problemas frecuentes
+
+| Problema | Solución |
+|---|---|
+| `Connection refused` / error 2003 al iniciar | MySQL no está encendido: inicia MySQL en XAMPP. |
+| `No hay conexión con el servidor` en la app | La API no está corriendo o `baseUrl` en `api_config.dart` no coincide con tu caso. |
+| `No module named ...` | Instala las librerías: `venv\Scripts\python.exe -m pip install -r requirements.txt`. |
+| Cientos de errores rojos en VS Code | Falta ejecutar `flutter pub get` dentro de `flutter_cero_excesos`. |
+| `Unknown column ...` | Existe una base `cero_excesos` antigua con otra estructura: elimínala en phpMyAdmin y vuelve a ejecutar `datos_demo.py`. |
+| Error en `test/widget_test.dart` | Borra ese archivo. |
+
+---
+
+## Licencia
+
+Proyecto académico con fines educativos.

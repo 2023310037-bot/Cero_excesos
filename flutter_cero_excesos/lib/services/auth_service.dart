@@ -18,7 +18,7 @@ class AuthService {
     return null;
   }
 
-  // VALIDAR REGISTRO (RF001)
+  // VALIDAR REGISTRO
 
   String? validarRegistro({
     required String nombre,
@@ -52,7 +52,7 @@ class AuthService {
     return null;
   }
 
-  // AUTENTICAR USUARIO (RF002)
+  // AUTENTICAR USUARIO
 
   Future<Map<String, dynamic>> autenticar({
     required String correo,
@@ -86,7 +86,7 @@ class AuthService {
     );
   }
 
-  // REGISTRAR USUARIO (RF001)
+  // REGISTRAR USUARIO
 
   Future<Map<String, dynamic>> registrarUsuario({
     required String nombre,

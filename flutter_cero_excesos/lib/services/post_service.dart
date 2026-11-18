@@ -5,9 +5,7 @@ import '../models/post_model.dart';
 import 'api_config.dart';
 
 class PostService {
-  // ==========================================
-  // RF003: AGREGAR PUBLICACIÓN (FOTOGRAFÍA OPCIONAL)
-  // ==========================================
+  // AGREGAR PUBLICACIÓN (FOTOGRAFÍA OPCIONAL)
 
   Future<PostModel> agregarPost({
     required String titulo,
@@ -40,9 +38,7 @@ class PostService {
     );
   }
 
-  // ==========================================
-  // RF003: EDITAR PUBLICACIÓN (SOLO EL AUTOR)
-  // ==========================================
+  // EDITAR PUBLICACIÓN (SOLO EL AUTOR)
 
   Future<PostModel> editarPost({
     required int id,
@@ -75,9 +71,7 @@ class PostService {
     );
   }
 
-  // ==========================================
-  // RF004 y RF005: CONSULTAR PUBLICACIONES
-  // ==========================================
+  // CONSULTAR PUBLICACIONES
 
   Future<List<PostModel>> obtenerPosts({
     int? categoriaId,
@@ -115,9 +109,7 @@ class PostService {
         .toList();
   }
 
-  // ==========================================
   // ELIMINAR PUBLICACIÓN (AUTOR O ADMINISTRADOR)
-  // ==========================================
 
   Future<void> eliminarPost({
     required int id,

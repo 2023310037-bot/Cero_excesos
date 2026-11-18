@@ -13,7 +13,7 @@ import '../widgets/dialogo_cambiar_password.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/user_drawer.dart';
 
-// RF007: el usuario consulta y edita solo el perfil de su sesión.
+// El usuario consulta y edita solo el perfil de su sesión.
 class ProfilePage extends StatefulWidget {
   const ProfilePage({
     super.key,

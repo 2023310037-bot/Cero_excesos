@@ -12,7 +12,6 @@ import '../widgets/app_colores.dart';
 import '../widgets/category_chip.dart';
 import '../widgets/primary_button.dart';
 
-// RF003: crear una entrada nueva o editar una existente.
 class AddBlogPage extends StatefulWidget {
   const AddBlogPage({
     super.key,
@@ -133,7 +132,6 @@ class _AddBlogPageState extends State<AddBlogPage> {
   Future<void> guardar() async {
     if (!formKey.currentState!.validate()) return;
 
-    // RF005: todo artículo debe tener una categoría.
     if (categoriaSeleccionada == null) {
       mostrarMensaje('Selecciona una categoría');
       return;

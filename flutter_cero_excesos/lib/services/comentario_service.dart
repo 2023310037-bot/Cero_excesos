@@ -7,7 +7,7 @@ import '../models/reaccion_model.dart';
 import 'api_config.dart';
 
 class ComentarioService {
-  // RF006: comentarios de una publicación. Si se manda el token, el
+  // Comentarios de una publicación. Si se manda el token, el
   // servidor marca cuáles reacciones son del usuario.
 
   Future<List<ComentarioModel>> obtenerComentariosPorBlog(

@@ -10,7 +10,6 @@ import '../widgets/post_card.dart';
 import '../widgets/user_drawer.dart';
 import 'post_detail_page.dart';
 
-// RF004 (consultar publicaciones) y RF005 (filtrar por categoría).
 class BlogPage extends StatefulWidget {
   const BlogPage({
     super.key,
